@@ -20,7 +20,7 @@ header('Content-Type: text/html; charset=utf-8');
 
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_UA" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" href="_styles.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="styles.css" media="screen">
 </head>
 
 <body>
