@@ -115,10 +115,11 @@ ol.tree
 .menu_header {
 	display:block;
 	float:left;
-	margin-top: 2px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	margin-top:2px;
+	width:100%;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .close {
 	display:block;
