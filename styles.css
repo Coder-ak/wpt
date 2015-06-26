@@ -116,6 +116,8 @@ ol.tree
 	display:block;
 	float:left;
 	margin-top: 2px;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .close {
 	display:block;
