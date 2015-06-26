@@ -43,11 +43,11 @@ $files = scandir("./gpx/");
     	foreach($date_array AS $date => $files) {
     		$checked = '';
     		$folder .= "<li>
-		<label for='$date'>".$date." <img src='un-checked.png' class='save' id='d_$date' /></label> <input type='checkbox' id='$date' />
+		<label for='$date'>".$date." <img src='img/un-checked.png' class='save' id='d_$date' /></label> <input type='checkbox' id='$date' />
 		<ol>";
 		
     		foreach($files AS $file){
-    			$folder .= "<li class='file'><img src='un-checked.png' class='save' id='$file' /> <a href='' class='files'>$file</a></li>";
+    			$folder .= "<li class='file'><img src='img/un-checked.png' class='save' id='$file' /> <a href='' class='files'>$file</a></li>";
     		}
     		$folder .= "</ol></li>";
     	}
@@ -67,11 +67,11 @@ $(document).ready(function() {
     $(".save").click(function(event) {
 	    event.preventDefault();
     	if(localStorage.getItem(event.target.id)) {
-    		$(this).attr('src', 'un-checked.png');
+    		$(this).attr('src', 'img/un-checked.png');
     		localStorage.removeItem(event.target.id);
     	}
     	else {
-    		$(this).attr('src', 'checked.png');
+    		$(this).attr('src', 'img/checked.png');
         	localStorage.setItem(event.target.id, 1 );
 		}
     });
