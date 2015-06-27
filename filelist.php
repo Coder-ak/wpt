@@ -1,28 +1,6 @@
 <ol class='tree'>
 <?
-
-if (isset($_GET['exit'])) { 
-	header('Location: http://logout@$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]');
-}
-
-$Password = "Peshehod8"; //Da ty ebanis!
-
-function authenticate(){
-    header("WWW-Authenticate: Basic realm=\"GPX\"");
-    header('HTTP/1.0 401 Unauthorized');
-    echo "You must enter a valid user name and password to access the requested resource.";
-    exit;
-}
-
-for(; 1; authenticate()){
-    if (!isset($_SERVER['PHP_AUTH_USER']))
-        continue;
-	
-	if($_SERVER['PHP_AUTH_PW'] != $Password)
-		continue;
-	
-    break;
-}
+require("auth.php");
 
 function sortDate( $a, $b ) {
     return strtotime($a.".2015") - strtotime($b.".2015");
@@ -33,6 +11,9 @@ $files = scandir("./gpx/");
     	
     	foreach($gpx AS $name){
     		$date = explode("_", $name);
+            if(count($date)==1) {
+                $date = explode(".", $name);
+            }
     		$date_array[$date[0]][] = $name;
     	}
     	
@@ -43,7 +24,7 @@ $files = scandir("./gpx/");
     	foreach($date_array AS $date => $files) {
     		$checked = '';
     		$folder .= "<li>
-		<label for='$date'>".$date." <img src='img/un-checked.png' class='save' id='d_$date' /></label> <input type='checkbox' id='$date' />
+		<label for='$date'><img src='img/un-checked.png' class='save' id='d_$date' />".$date."</label> <input type='checkbox' id='$date' />
 		<ol>";
 		
     		foreach($files AS $file){
@@ -61,7 +42,7 @@ $(document).ready(function() {
 	//localStorage.clear(); //Delete it all
 	
 	$.each(localStorage, function(i) { //a ne huynyu li ya nesu?
-		$("#"+i.replace(/\./ig, "\\.")).attr('src', 'checked.png');
+		$("#"+i.replace(/\./ig, "\\.")).attr('src', 'img/checked.png');
 	});
 	
     $(".save").click(function(event) {

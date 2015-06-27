@@ -66,11 +66,11 @@ ol.tree
 	}
 		li input + ol  
 		{
-			background: url(toggle-small-expand.png) 40px 0 no-repeat;
+			background: url(img/toggle-small-expand.png) 40px 0 no-repeat;
 			margin: -15px 0 0 -44px; /* 15px */
 			height: 1em;
 		}
-		li input + ol > li { display: none; margin-left: -14px !important; padding-left: 1px; }
+		li input + ol > li { display: none; margin-left: -14px !important;}
 		
 	li label
 	{
@@ -82,7 +82,7 @@ ol.tree
 
 	li input:checked + ol
 	{
-		background: url(toggle-small.png) 40px 5px no-repeat;
+		background: url(img/toggle-small.png) 40px 5px no-repeat;
 		margin: -20px 0 0 -44px; /* 20px */
 		padding: 20px 0 0 60px;
 		height: auto;
@@ -91,7 +91,7 @@ ol.tree
 		li input:checked + ol > li:last-child { margin: 0 0 0.063em; /* 1px */ }
 		
 	li img {
-		margin: -5px -5px -5px 0;
+		a-margin: -5px -5px -5px 0;
 	}
 	
 /* Menu */
@@ -116,7 +116,7 @@ ol.tree
 	display:block;
 	float:left;
 	margin-top:2px;
-	width:100%;
+	width:195px;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -125,9 +125,25 @@ ol.tree
 	display:block;
 	float:right;
 	margin:-2px 0;
-	width:25px;
+	width:23px;
 	height:25px;
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><path d="M8,5.5 L8.5,5 L15,11.5 L21.5,5 L22,5.5 L15.5,12 L22,18.5 L21.5,19 L18.5,16 L15,12.5 L8.5,19 L8,18.5 L14.5,12 L8,5.5 Z"></path></svg>');
+}
+.fcontainer {
+	border-width: 1px;
+	border-style:solid;
+	border-color: #999;
+	border-radius: 0 0 3px 3px;
+	background-color: #333;
+	position:absolute;
+	right: 10px;
+	top: 76px;
+	max-height: 88%;
+	overflow:scroll;
+	width: 218px;
+	padding: 5px;
+	margin-bottom: 30px;
+	background-image: linear-gradient(#FFF 0px, #EEE 100%);
 }
 .links {
 	position:absolute;
@@ -136,4 +152,16 @@ ol.tree
 	padding: 3px;
 	border-radius:4px;
 	background-color:rgba(255, 255, 255, 0.7);
+}
+.save {
+	margin:0 0 -4px -5px;
+}
+.file {
+	padding-left: 3px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.files {
+	margin-left: -5px;
 }

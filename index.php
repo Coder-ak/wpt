@@ -20,39 +20,76 @@ header('Content-Type: text/html; charset=utf-8');
 
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_UA" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="jquery.uploadfile.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="upload.css">
+
 </head>
 
 <body>
 <div style="width: 100%; height: 100%; position:absolute;">
     <div id="map" style="width: 100%; height: 100%; text-align:right"></div>
-    <div class="links">
+    <div class="links" style="display:none">
     	<a href='#' id='mpro' target=_blank>MPRO</a> | <a href='#' id='nmap' target=_blank>NMAP</a> | <a href='#' id='osm' target=_blank>OSM</a> | <a href='#' id='here' target=_blank>HERE</a>
     </div>
     <div class="trigger">
 	    <div class="menu_header">GPX files</div>
     	<div class="close"></div>
 	</div>
-    <div class="fcontainer" style="border-width: 1px; border-style:solid; border-color: #999;border-radius: 0 0 3px 3px;background-color: #333; position:absolute; right: 10px; top: 76px; max-height: 88%; overflow:scroll; width: 218px; padding: 5px;margin-bottom: 30px;background-image: linear-gradient(#FFF 0px, #EEE 100%);">
-    	<?include("filelist.php");?>
+    <div class="fcontainer">
+    	<div id="mulitplefileuploader">Upload</div>
+		<div id="status"></div>
+		<div id="filelist"><?include("filelist.php");?></div>
     </div>
 </div>
     
 <script type="text/javascript">
-$(".files").click(function (e) {
-	e.preventDefault();
-	location.hash = "!" + encodeURIComponent($(this).text());
-	$(".files").css({"font-weight":"normal"}); // un-bold all
-	$(this).css({"font-weight":"bold"});	
-	LoadGpx($(this).text())
-
-});
-
-$(".trigger").click(function(){ 
-	$(".fcontainer, .close").toggle();
-});
-
 $(function (){//ready
+	$("#filelist").on('click', '.files', function (e) {
+		e.preventDefault();
+		location.hash = "!" + encodeURIComponent($(this).text());
+		$(".files").css({"font-weight":"normal"}); // un-bold all
+		$(this).css({"font-weight":"bold"});	
+		LoadGpx($(this).text())
+	});
+
+	$(".trigger").click(function(){ 
+		$(".fcontainer, .close").toggle();
+	});
+
+	//File Uploading
+	var settings = {
+	    url: "upload.php",
+	    dragDrop:true,
+	    fileName: "myfile",
+	    allowedTypes:"gpx,kml",	
+	    returnType:"json",
+	    showDone:false,
+	    showDelete:false,
+	    fileCounterStyle:". ",
+		 onSuccess:function(files,data,xhr)
+	    {
+	       $("#filelist").load("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>filelist.php");
+	    },
+	    deleteCallback: function(data,pd)
+		{
+	    for(var i=0;i<data.length;i++)
+	    {
+	        $.post("delete.php",{op:"delete",name:data[i]},
+	        function(resp, textStatus, jqXHR)
+	        {
+	            //Show Message  
+	            $("#status").append("<div>File Deleted</div>");      
+	        });
+	     }      
+	    pd.statusbar.hide(); //You choice to hide/not.
+
+		}
+	}
+	var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
+
+	//Get filename from url
 	gpxfile = decodeURIComponent(location.hash.slice(2));
 	if(gpxfile){
 		id = gpxfile.replace(/\./ig, "\\.");
@@ -72,8 +109,9 @@ function LoadGpx(gpxfile){
 }
 
 function init(url){
-	createMapFromUrl("http://<?=$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]?>gpx/" + url, function (map) {
+	createMapFromUrl("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>gpx/" + url, function (map) {
 
+		$(".links").toggle();//Toggle links with Map
 		myMap.events.add('boundschange', function (event) {
 			var center = myMap.getCenter();
 	
@@ -94,7 +132,8 @@ function init(url){
 function createMapFromUrl(url, callback) {
 	var timestamp = new Date().getTime();
     ymaps.geoXml.load(url + "?" + timestamp).then(function (res) {
-            
+
+
         callback(myMap = new ymaps.Map("map", {
             center: res.geoObjects.get(0).geometry.getCoordinates(),
             zoom: 14
