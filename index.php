@@ -111,7 +111,7 @@ function LoadGpx(gpxfile){
 function init(url){
 	createMapFromUrl("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>gpx/" + url, function (map) {
 
-		$(".links").toggle();//Toggle links with Map
+		$(".links").show();//Show links afterl loading Map
 		myMap.events.add('boundschange', function (event) {
 			var center = myMap.getCenter();
 	
