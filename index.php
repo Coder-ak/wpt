@@ -105,6 +105,7 @@ $(function (){//ready
 function LoadGpx(gpxfile){
 	$(".fcontainer, .close").toggle();
 	$(".menu_header").html(gpxfile);
+	$(".ajax-file-upload-statusbar").hide();
 	ymaps.ready( function(){
 		$('#map').empty();
 		init( encodeURIComponent(gpxfile) );
