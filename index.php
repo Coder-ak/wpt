@@ -140,7 +140,7 @@ function createMapFromUrl(url, callback) {
     ymaps.geoXml.load(url + "?" + timestamp).then(function (res) {
 
         callback(myMap = new ymaps.Map("map", {
-            center: res.geoObjects.get(0).geometry.getCoordinates(),
+            center: res.geoObjects.get(0).geometry.getCoordinates(),//[48.37251647506462,24.43438263114177]
             zoom: 14
         }));
         
