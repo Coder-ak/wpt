@@ -6,6 +6,8 @@ header("Pragma: no-cache"); // HTTP/1.0
 header('Content-Type: text/html; charset=utf-8');
 ?>
 <!--
+Вер. хз какая +4
+- хинты меток с полем Name
 Вер. хз какая +3
 - Загрузка файлов
 - Мелкие исправление в авторизации
@@ -152,6 +154,7 @@ function createMapFromUrl(url, callback) {
   
 		res.geoObjects.each(function (obj) {
     		descrImg = obj.properties.get('description');
+    		obj.properties.set({hintContent: obj.properties.get('name')});
 			var pattern = new RegExp(/(photo\/\S*\.jpg)/i);
 			if (pattern.test(descrImg)) {
 				obj.options.set('preset', 'islands#dotIcon');
