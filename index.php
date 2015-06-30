@@ -43,7 +43,7 @@ header('Content-Type: text/html; charset=utf-8');
     	<div class="close"></div>
 	</div>
     <div class="fcontainer">
-    	<div id="mulitplefileuploader">Upload</div>
+    	<div id="mulitplefileuploader" style="display:none">Upload</div>
 		<div id="status"></div>
 		<div id="filelist"><?include("filelist.php");?></div>
     </div>
