@@ -139,7 +139,7 @@ function createMapFromUrl(url, callback) {
 
 
         callback(myMap = new ymaps.Map("map", {
-            center: res.geoObjects.get(0).geometry.getCoordinates(),
+            center: res.geoObjects.get(0).geometry.getCoordinates(), //[48.37251647506462,24.43438263114177]
             zoom: 14
         }));
         
