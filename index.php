@@ -158,7 +158,7 @@ function createMapFromUrl(url, callback) {
 			if (pattern.test(descrImg)) {
 				obj.options.set('preset', 'islands#dotIcon');
 				imgUrl = descrImg.match(pattern)[1];	
-				obj.properties.set( {description:  descrImg + '<br><a href="' + imgUrl + '" target=_blank><img src="' + imgUrl + '" width=300></a>'} );
+				obj.properties.set( {description:  descrImg + '<br><a href="' + imgUrl + '" target=_blank><img src="' + imgUrl + '" width=400></a>'} );
 			}
 		});
 
