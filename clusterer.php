@@ -28,8 +28,6 @@ header('Content-Type: text/html; charset=utf-8');
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_UA" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
 	<script src="jquery.uploadfile.min.js"></script>
-	<script src="jqueryFileTree.js" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" href="jqueryFileTree.css">
 	<link rel="stylesheet" type="text/css" href="styles.css" media="screen">
 	<link rel="stylesheet" type="text/css" href="upload.css">
 
@@ -48,40 +46,23 @@ header('Content-Type: text/html; charset=utf-8');
     <div class="fcontainer">
     	<div id="mulitplefileuploader" style="display:none">Upload</div>
 		<div id="status"></div>
-		<div id="filelist"></div>
+		<div id="filelist"><?include("filelist.php");?></div>
     </div>
 </div>
     
 <script type="text/javascript">
 $(function (){//ready
-	$('#filelist').fileTree({ root: "" }, function(file) { //jqueryFileTree
-        OpenFile(file);
-    });
+	$("#filelist").on('click', '.files', function (e) {
+		e.preventDefault();
+		location.hash = "!" + encodeURIComponent($(this).text());
+		$(".files").css({"font-weight":"normal"}); // un-bold all
+		$(this).css({"font-weight":"bold"});	
+		LoadGpx($(this).text())
+	});
 
 	$(".trigger").click(function(){ 
 		$(".fcontainer, .close").toggle();
 	});
-
-	//localStorage.clear();
-
-	$("#filelist").on("DOMNodeInserted", function() {
-		$.each(localStorage, function(i) { //a ne huynyu li ya nesu?
-			$('img[id="'+i+'"]').attr('src', 'images/checked.svg');
-		});
-	});
-	
-    $("#filelist").on("click",".save",function(event) {
-    	console.log(event)
-	    event.preventDefault();
-    	if(localStorage.getItem(event.target.id)) {
-    		$(this).attr('src', 'images/unchecked.svg');
-    		localStorage.removeItem(event.target.id);
-    	}
-    	else {
-    		$(this).attr('src', 'images/checked.svg');
-        	localStorage.setItem(event.target.id, 1 );
-		}
-    });
 
 	//File Uploading
 	var settings = {
@@ -95,7 +76,7 @@ $(function (){//ready
 	    fileCounterStyle:". ",
 		 onSuccess:function(files,data,xhr)
 	    {
-	       $("#filelist").load("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>filelist.php");
+	       $("#filelist").load("http://<?=$_SERVER['HTTP_HOST'].dirname($_SERVER['REQUEST_URI'])?>/filelist.php");
 	    },
 	    deleteCallback: function(data,pd)
 		{
@@ -115,22 +96,14 @@ $(function (){//ready
 	var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
 
 	//Get filename from url
-	gpxfile = decodeURI(location.hash.slice(2));
+	gpxfile = decodeURIComponent(location.hash.slice(2));
 	if(gpxfile){
 		id = gpxfile.replace(/\./ig, "\\.");
-		//$(".save#"+id).next(".files").css({"font-weight":"bold"});
-		//$("#" + gpxfile.split("_")[0].replace(/\./ig, "\\.")).prop('checked', true);
+		$(".save#"+id).next(".files").css({"font-weight":"bold"});
+		$("#" + gpxfile.split("_")[0].replace(/\./ig, "\\.")).prop('checked', true);
 		LoadGpx(gpxfile);
 	}
 });
-
-function OpenFile(file){
-	rel = decodeURI(file.attr('rel'));
-	$(".files").css({"font-weight":"normal"})
-	$(file).css({"font-weight":"bold"});
-	location.hash = "!" + encodeURI(rel);
-	LoadGpx(rel);
-}
 
 function LoadGpx(gpxfile){
 	$(".fcontainer, .close").toggle();
@@ -138,9 +111,31 @@ function LoadGpx(gpxfile){
 	$(".ajax-file-upload-statusbar").hide();
 	ymaps.ready( function(){
 		$('#map').empty();
-		init( encodeURI(gpxfile) );
+		init( encodeURIComponent(gpxfile) );
 	});
 }
+
+/*function init(url){
+	createMapFromUrl("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>gpx/" + url);*/
+	/*, function (map) {
+
+		$(".links").show();//Show links afterl loading Map
+		myMap.events.add('boundschange', function (event) {
+			var center = myMap.getCenter();
+	
+			$('#mpro').attr("href", "https://mpro.maps.yandex.ru/?ll=" + center[1] + "," + center[0] + "&z=" + (myMap.getZoom()+1));
+			$('#nmap').attr("href", "https://n.maps.yandex.ru/#!/?z=" + (myMap.getZoom()+1) + "&ll=" + center[1] + "," + center[0]);
+			$('#osm').attr("href", "https://www.openstreetmap.org/#map=" + (myMap.getZoom()+1) + "/" + center[0] + "/" + center[1]);
+			$('#here').attr("href", "https://www.here.com/?map=" + center[0] + "," + center[1] + "," + (myMap.getZoom()+1) + ",satellite");
+		});
+
+		myMap.geoObjects.events.add('mousedown', function (e) {
+			e.get('target').options.set('iconColor', '#FFCB1A');
+		});
+
+	});*/
+	
+//}
    
 function GeoCoder(request, callback) {
     ymaps.geocode(request, {results: 1}).then(function (res) {
@@ -149,14 +144,16 @@ function GeoCoder(request, callback) {
 }
 
 function init(url) { //createMapFromUrl
-	var timestamp = new Date().getTime();
-    ymaps.geoXml.load("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>gpx/" + url + "?" + timestamp).then(function (res) {
+	var timestamp = new Date().getTime();console.log("asdd 0");
+    ymaps.geoXml.load("http://<?=$_SERVER['HTTP_HOST'].dirname($_SERVER['REQUEST_URI'])?>/gpx/" + url + "?" + timestamp).then(function (res) {
 
     	myMap = new ymaps.Map("map", {
             center: [48.37251647506462,24.43438263114177],//res.geoObjects.get(0).geometry.getCoordinates(),//[48.37251647506462,24.43438263114177]
             zoom: 14,
             autoFitToViewport: 'always'
         });
+console.log("asdd 1");
+		var myClusterer = new ymaps.Clusterer(), result = [];
 
     	myMap.copyrights.add('&copy; Coder_ak');
     	
@@ -209,10 +206,25 @@ function init(url) { //createMapFromUrl
 				imgUrl = descrImg.match(pattern)[1];	
 				obj.properties.set( {description:  descrImg + '<br><a href="' + imgUrl + '" target=_blank><img src="' + imgUrl + '" width=400></a>'} );
 			}
+			result.push(obj);
 		});
 
-		myMap.geoObjects.add(res.geoObjects); 
-		myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: true});
+
+
+
+myClusterer.add(result);
+
+myMap.geoObjects.add(myClusterer);
+console.log("asdd "+myClusterer.getBounds());
+
+myMap.setBounds(myClusterer.getBounds(), {
+        checkZoomRange: true
+    });
+
+
+    	
+		//myMap.geoObjects.add(res.geoObjects); 
+		//myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: true});
         myMap.events.add('click', function (e) {  
 			myMap.balloon.close();
 		});
