@@ -6,6 +6,8 @@ header("Pragma: no-cache"); // HTTP/1.0
 header('Content-Type: text/html; charset=utf-8');
 ?>
 <!--
+Вер. хз какая +6
+- новый кондовый список файлов. Аякс, хуякс и все дела
 Вер. хз какая +5
 - геокодер по координатам при клике правой мышью
 Вер. хз какая +4
@@ -62,14 +64,22 @@ $(function (){//ready
 		$(".fcontainer, .close").toggle();
 	});
 
-	//localStorage.clear();
+	//Get filename from url
+	gpxfile = decodeURI(location.hash.slice(2));
+	if(gpxfile){
+		//id = gpxfile.replace(/\./ig, "\\.");
+		//$(".save#"+id).next(".files").css({"font-weight":"bold"});
+		//$("#" + gpxfile.split("_")[0].replace(/\./ig, "\\.")).prop('checked', true);
+		LoadGpx(gpxfile);
+	}
 
 	$("#filelist").on("DOMNodeInserted", function() {
+		$('img[id="'+gpxfile+'"]').next(".files").css({"font-weight":"bold"});
 		$.each(localStorage, function(i) { //a ne huynyu li ya nesu?
 			$('img[id="'+i+'"]').attr('src', 'images/checked.svg');
 		});
 	});
-	
+	//localStorage.clear();
     $("#filelist").on("click",".save",function(event) {
     	console.log(event)
 	    event.preventDefault();
@@ -113,15 +123,6 @@ $(function (){//ready
 		}
 	}
 	var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
-
-	//Get filename from url
-	gpxfile = decodeURI(location.hash.slice(2));
-	if(gpxfile){
-		id = gpxfile.replace(/\./ig, "\\.");
-		//$(".save#"+id).next(".files").css({"font-weight":"bold"});
-		//$("#" + gpxfile.split("_")[0].replace(/\./ig, "\\.")).prop('checked', true);
-		LoadGpx(gpxfile);
-	}
 });
 
 function OpenFile(file){
@@ -187,19 +188,6 @@ function init(url) { //createMapFromUrl
 			});
         });
 
-
-        /*callback( myMap = new ymaps.Map("map", {
-            center: res.geoObjects.get(0).geometry.getCoordinates(),//[48.37251647506462,24.43438263114177]
-            zoom: 14
-        }));*/
-        
-        /*
-        Аааа, ну почему так нельзя!!!
-        callback(
-        	$mapElement = $('#map'), console.log( res.geoObjects.getBounds() ),
-        	myMap = new ymaps.Map($mapElement[0], ymaps.util.bounds.getCenterAndZoom(res.geoObjects.getBounds(), [$mapElement.width(), $mapElement.height()]) )
-        );*/
-
 		res.geoObjects.each(function (obj) {
     		descrImg = obj.properties.get('description');
     		obj.properties.set({hintContent: obj.properties.get('name')});
@@ -217,7 +205,7 @@ function init(url) { //createMapFromUrl
 			myMap.balloon.close();
 		});
 
-		$(".links").show();//Show links afterl loading Map
+		$(".links").show();//Show links after loading Map
 
     });
 }
