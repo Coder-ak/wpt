@@ -23,7 +23,7 @@ function sortDate( $a, $b ) {
     return strtotime($m_b[0].".2015") - strtotime($m_a[0].".2015");
 }
 
-$_POST['dir'] = "/".urldecode($_POST['dir']);
+$_POST['dir'] = urldecode($_POST['dir']);
 $root = getcwd()."/gpx/";
 
 if( file_exists($root . $_POST['dir']) ) {
