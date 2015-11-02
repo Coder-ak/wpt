@@ -151,11 +151,14 @@ function GeoCoder(request, callback) {
 
 function init(url) { //createMapFromUrl
 	var timestamp = new Date().getTime();
+	var center = "[49.191602,35.027585]";//"[48.37251647506462,24.43438263114177]";
 
     ymaps.geoXml.load("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>gpx/" + url + "?" + timestamp).then(function (res) {
-
+    	if(res.geoObjects.get(0).geometry){
+    		center=res.geoObjects.get(0).geometry.getCoordinates();
+    	}
     	myMap = new ymaps.Map("map", {
-            center: [48.37251647506462,24.43438263114177],//res.geoObjects.get(0).geometry.getCoordinates(),//[48.37251647506462,24.43438263114177]
+            center: center,
             zoom: 14,
             autoFitToViewport: 'always'
         });
