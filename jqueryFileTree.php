@@ -17,6 +17,10 @@
 //
 require("auth.php");
 
+function sortDate( $a, $b ) {
+    return strtotime($a.".2015") - strtotime($b.".2015");
+}
+
 $_POST['dir'] = urldecode($_POST['dir']);
 $root = getcwd()."/gpx/";
 
@@ -32,6 +36,7 @@ if( file_exists($root . $_POST['dir']) ) {
 			}
 		}
 		// All files
+		uksort($files, "sortDate");
 		foreach( $files as $file ) {
 			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && !is_dir($root . $_POST['dir'] . $file) && preg_match("/.+\.(gpx|kml)$/", $file) ) {
 				$ext = preg_replace('/^.*\./', '', $file);
