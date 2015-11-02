@@ -8,6 +8,7 @@ header('Content-Type: text/html; charset=utf-8');
 <!--
 Вер. хз какая +6
 - новый кондовый список файлов. Аякс, хуякс и все дела
+- ресайзнутые превьюшки фоток
 Вер. хз какая +5
 - геокодер по координатам при клике правой мышью
 Вер. хз какая +4
@@ -41,7 +42,7 @@ header('Content-Type: text/html; charset=utf-8');
 <div style="width: 100%; height: 100%;">
     <div id="map" style="width: 100%; height: 100%;"></div>
     <div class="links" style="display:none">
-    	<a href='#' id='mpro' target=_blank>MPRO</a> | <a href='#' id='nmap' target=_blank>NMAP</a> | <a href='#' id='osm' target=_blank>OSM</a> | <a href='#' id='here' target=_blank>HERE</a>
+    	<a href='#' id='mpro' target=_blank>MPRO</a> | <a href='#' id='nmap' target=_blank>NMAP</a> | <a href='#' id='osm' target=_blank>OSM</a> | <a href='#' id='here' target=_blank>HERE</a> | <a href='#' id='google' target=_blank>Google</a>
     </div>
     <div class="trigger">
 	    <div class="menu_header">GPX files</div>
@@ -172,6 +173,7 @@ function init(url) { //createMapFromUrl
 			$('#nmap').attr("href", "https://n.maps.yandex.ru/#!/?z=" + (myMap.getZoom()+1) + "&ll=" + center[1] + "," + center[0]);
 			$('#osm').attr("href", "https://www.openstreetmap.org/#map=" + (myMap.getZoom()+1) + "/" + center[0] + "/" + center[1]);
 			$('#here').attr("href", "https://www.here.com/?map=" + center[0] + "," + center[1] + "," + (myMap.getZoom()+1) + ",satellite");
+			$('#google').attr("href", "https://www.google.com.ua/maps/@" + center[0] + "," + center[1] + "," + (myMap.getZoom()+1) + "z");
 		});
 
 		myMap.geoObjects.events.add('mousedown', function (e) {
