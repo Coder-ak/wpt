@@ -82,7 +82,6 @@ $(function (){//ready
 	});
 	//localStorage.clear();
     $("#filelist").on("click",".save",function(event) {
-    	console.log(event)
 	    event.preventDefault();
     	if(localStorage.getItem(event.target.id)) {
     		$(this).attr('src', 'images/unchecked.svg');
