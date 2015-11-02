@@ -46,7 +46,7 @@ header('Content-Type: text/html; charset=utf-8');
     </div>
     <div class="trigger">
 	    <div class="menu_header">GPX files</div>
-    	<div class="close"></div>
+    	<div class="close"></div><div class="open"></div>
 	</div>
     <div class="fcontainer">
     	<div id="mulitplefileuploader" style="display:none">Upload</div>
@@ -62,7 +62,7 @@ $(function (){//ready
     });
 
 	$(".trigger").click(function(){ 
-		$(".fcontainer, .close").toggle();
+		$(".fcontainer, .close, .open").toggle();
 	});
 
 	//Get filename from url
@@ -135,7 +135,7 @@ function OpenFile(file){
 }
 
 function LoadGpx(gpxfile){
-	$(".fcontainer, .close").toggle();
+	$(".fcontainer, .close, .open").toggle();
 	$(".menu_header").html(gpxfile);
 	$(".ajax-file-upload-statusbar").hide();
 	ymaps.ready( function(){
