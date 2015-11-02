@@ -35,7 +35,7 @@ if( file_exists($root . $_POST['dir']) ) {
 		foreach( $files as $file ) {
 			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && !is_dir($root . $_POST['dir'] . $file) && preg_match("/.+\.(gpx|kml)$/", $file) ) {
 				$ext = preg_replace('/^.*\./', '', $file);
-				echo "<li class=\"file ext_$ext\"><img src=\"images/unchecked.svg\" class=\"save\" id=\"".$_POST['dir'].$file."\" /><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file,ENT_QUOTES,"UTF-8") . "\" class=\"files\">" . $file."</a></li>";
+				echo "<li class=\"file ext_$ext\"><img src=\"images/unchecked.svg\" class=\"save\" id=\"".$_POST['dir'].$file."\" /><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file,ENT_QUOTES,"UTF-8") . "\" class=\"files\">" . htmlentities($file,ENT_QUOTES,"UTF-8")."</a></li>";
 			}
 		}
 		echo "</ul>";	
