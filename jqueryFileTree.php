@@ -17,7 +17,13 @@
 //
 require("auth.php");
 
-$_POST['dir'] = urldecode($_POST['dir']);
+function sortDate( $a, $b ) {
+	preg_match("/\d{2}\.\d{2}/", $a,$m_a);
+	preg_match("/\d{2}\.\d{2}/", $b,$m_b);
+    return strtotime($m_b[0].".2015") - strtotime($m_a[0].".2015");
+}
+
+$_POST['dir'] = "/".urldecode($_POST['dir']);
 $root = getcwd()."/gpx/";
 
 if( file_exists($root . $_POST['dir']) ) {
@@ -32,6 +38,7 @@ if( file_exists($root . $_POST['dir']) ) {
 			}
 		}
 		// All files
+		usort($files, "sortDate");
 		foreach( $files as $file ) {
 			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && !is_dir($root . $_POST['dir'] . $file) && preg_match("/.+\.(gpx|kml)$/", $file) ) {
 				$ext = preg_replace('/^.*\./', '', $file);
