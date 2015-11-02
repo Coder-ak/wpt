@@ -151,6 +151,7 @@ function GeoCoder(request, callback) {
 
 function init(url) { //createMapFromUrl
 	var timestamp = new Date().getTime();
+
     ymaps.geoXml.load("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>gpx/" + url + "?" + timestamp).then(function (res) {
 
     	myMap = new ymaps.Map("map", {
@@ -189,13 +190,13 @@ function init(url) { //createMapFromUrl
         });
 
 		res.geoObjects.each(function (obj) {
-    		descrImg = obj.properties.get('description');
     		obj.properties.set({hintContent: obj.properties.get('name')});
-			var pattern = new RegExp(/(photo\/\S*\.jpg)/i);
+    		descrImg = obj.properties.get('description');
+			var pattern = new RegExp(/photo\/(\S*\.jpg)/i);
 			if (pattern.test(descrImg)) {
 				obj.options.set('preset', 'islands#dotIcon');
 				imgUrl = descrImg.match(pattern)[1];	
-				obj.properties.set( {description:  descrImg + '<br><a href="' + imgUrl + '" target=_blank><img src="' + imgUrl + '" width=400></a>'} );
+				obj.properties.set( {description:  descrImg + '<br><a href="photo/' + imgUrl + '" target=_blank><img src="photo_tr/' + imgUrl + '"></a>'} );
 			}
 		});
 
