@@ -207,10 +207,10 @@ function init(url) { //createMapFromUrl
 	    				case 'дорога':
 	    				case 'проезд':
 	    				case 'въезд':
-	    					obj.options.set({strokeColor: '#0071bdAA'});
+	    					obj.options.set({strokeColor: '#0071BDAA'});
 	    				break;
 	    				case 'тротуар':
-		    				obj.options.set({strokeColor: '#СС0000AA', strokeStyle: 'dash'});
+		    				obj.options.set({strokeColor: '#239800AA', strokeStyle: 'dash'});
 	    				break;
 	    				default:
 	    					obj.options.set({strokeColor: '#802010AA'});
