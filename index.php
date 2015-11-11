@@ -194,13 +194,34 @@ function init(url) { //createMapFromUrl
         });
 
 		res.geoObjects.each(function (obj) {
-    		obj.properties.set({hintContent: obj.properties.get('name')});
-    		descrImg = obj.properties.get('description');
-			var pattern = new RegExp(/photo\/(\S*\.jpg)/i);
-			if (pattern.test(descrImg)) {
-				obj.options.set('preset', 'islands#dotIcon');
-				imgUrl = descrImg.match(pattern)[1];	
-				obj.properties.set( {description:  descrImg + '<br><a href="photo/' + imgUrl + '" target=_blank><img src="photo_tr/' + imgUrl + '"></a>'} );
+
+			name = obj.properties.get('name');
+    		obj.properties.set({hintContent: name});
+
+    		if(obj.geometry) {
+	    		if(obj.geometry.getType() == 'LineString') {
+	    			obj.options.set({strokeWidth: 2});
+	    			switch (name.trim().toLowerCase()){
+	    				case 'дорога':
+	    				case 'проезд':
+	    					obj.options.set({strokeColor: '#0071bdAA'});
+	    				break;
+	    				case 'тротуар':
+		    				obj.options.set({strokeColor: '#239C00AA', strokeStyle: 'dash'});
+	    				break;
+	    				default:
+	    					obj.options.set({strokeColor: '#802010AA'});
+	    			}
+	    		}
+	    		else {
+		    		descrImg = obj.properties.get('description');
+					var pattern = new RegExp(/photo\/(\S*\.jpg)/i);
+					if (pattern.test(descrImg)) {
+						obj.options.set('preset', 'islands#dotIcon');
+						imgUrl = descrImg.match(pattern)[1];	
+						obj.properties.set( {description:  descrImg + '<br><a href="photo/' + imgUrl + '" target=_blank><img src="photo_tr/' + imgUrl + '"></a>'} );
+					}
+				}
 			}
 		});
 
