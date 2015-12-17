@@ -34,7 +34,7 @@ if( file_exists($root . $_POST['dir']) ) {
 		// All dirs
 		foreach( $files as $file ) {
 			if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && is_dir($root . $_POST['dir'] . $file) ) {
-				echo "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file,ENT_QUOTES,"UTF-8") . "/\">" . htmlentities($file,ENT_QUOTES,"UTF-8") . "</a></li>";
+				echo "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file,ENT_QUOTES,"UTF-8") . "/\">" . htmlentities($file,ENT_QUOTES,"UTF-8") . " (".iterator_count(new FilesystemIterator($root . $_POST['dir'] . $file, FilesystemIterator::SKIP_DOTS)).")</a></li>";
 			}
 		}
 		// All files
