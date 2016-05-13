@@ -2,6 +2,9 @@
 require("auth.php");
 
 $output_dir = "gpx/";
+if($_SERVER['PHP_AUTH_USER'] != 'Coder') {
+	$output_dir = $output_dir.$_SERVER['PHP_AUTH_USER']."/";
+}
 
 function check_name($filename){
 	global $output_dir;
@@ -30,7 +33,8 @@ if(isset($_FILES["myfile"]))
 	{
  	 	$fileName = check_name($_FILES["myfile"]["name"]);
  		move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
-    	$ret[]= $fileName;
+ 		
+    	$ret[]= $output_dir.$fileName;
 	}
 	else  //Multiple files, file[]
 	{

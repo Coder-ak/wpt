@@ -4,6 +4,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modifie
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Pragma: no-cache"); // HTTP/1.0
 header('Content-Type: text/html; charset=utf-8');
+require("auth.php");
 ?>
 <!--
 Вер. хз какая +7
@@ -105,10 +106,6 @@ $(function (){//ready
 	    showDone:false,
 	    showDelete:false,
 	    fileCounterStyle:". ",
-		 onSuccess:function(files,data,xhr)
-	    {
-	       $("#filelist").load("http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>filelist.php");
-	    },
 	    deleteCallback: function(data,pd)
 		{
 	    for(var i=0;i<data.length;i++)

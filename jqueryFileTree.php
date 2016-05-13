@@ -20,7 +20,7 @@ require("auth.php");
 function sortDate( $a, $b ) {
 	preg_match("/\d{2}\.\d{2}/", $a,$m_a);
 	preg_match("/\d{2}\.\d{2}/", $b,$m_b);
-    return strtotime($m_b[0].".2015") - strtotime($m_a[0].".2015");
+    return strtotime($m_b[0].".".date('Y')) - strtotime($m_a[0].".".date('Y'));
 }
 
 $_POST['dir'] = urldecode($_POST['dir']);
